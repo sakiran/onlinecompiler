@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>KSR Code, Compile & Run</title>
+    <link rel="icon" type="image/ico" href="images/favicon.ico" />
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/home.css" rel="stylesheet">
+    <style>
+        body {
+            overflow: hidden;
+        }
+        
+        #editor {
+            border: 1px solid gray;
+            height: 300px;
+        }
+        #outputdiv {
+            
+            height: 300px;
+        }
+    </style>
+    <script>
+        function display(checkbox) {
+            var mydiv = document.getElementById('custominputdiv');
+            if (checkbox.checked == true) {
+                mydiv.style.display = 'block'
+
+            } else {
+                mydiv.style.display = 'none'
+            }
+        }
+    </script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+                <a class="navbar-brand" href="#">KSR College</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="home.html">Home</a></li>
+
+                    
+
+
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="index.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 ">
+
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        
+ 
+ <form class="form-inline">
+  <div class="form-group">
+    <label>Select Language</label>
+    <select id ="mode" class="form-control">
+   <option value="python">python</option>
+   <option value="php">php</option>
+  <option value="java">java</option>
+  
+</select>
+    
+  </div>
+  <div class="form-group">
+    <label for="filename">&nbsp &nbsp File Name </label>
+    <input type="text" class="form-control" id="filename" value="example.py" >
+  </div>
+  
+</form>
+
+                    </div>
+                    <div class="panel-body">
+                       <div class="row">
+
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 ">
+
+			
+                        <pre id="editor"> # your code here</pre>
+                        
+                
+                         </div>
+
+                           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 panel panel-primary" id="outputdiv">
+                           <textarea  name="content" id="content" rows="5"  style="display:none;" disabled="disabled"></textarea>
+                           
+                        <h4>output</h4>
+                        <p id="outputdisplay"> Display Output</p>
+                        </div> 
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="panel-footer">
+
+                        <label><input type="checkbox" name="custominput" onchange='display(this);'> Custom Input</label>
+
+                        <span class="pull-right">
+                             
+                            <a href="#"  type="button" class="btn btn-success" id="run"><i class="glyphicon glyphicon-play"></i>  Run </a>
+                        </span>
+
+                    </div>
+
+
+
+                </div>
+                <div class="panel panel-success" id="custominputdiv" style="display:none">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Custom Input</h3>
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" rows="2" id="customtext" name="customtext"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- load ace -->
+    <script src="js/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!-- load ace language tools -->
+    <script src="js/src-noconflict/ext-language_tools.js"></script>
+    
+  
+
+    <script>
+        // trigger extension
+        ace.require("ace/ext/language_tools");
+var editor = ace.edit("editor");
+var textarea = $('textarea[name="content"]');
+editor.setTheme("ace/theme/tomorrow");
+editor.session.setMode("ace/mode/python");
+editor.getSession().on('change', function() {
+    textarea.val(editor.getSession().getValue());
+});
+textarea.val(editor.getSession().getValue());
+editor.setOption("showPrintMargin", false)
+
+// enable autocompletion and snippets
+editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: true
+});
+
+$('#mode').on('change', function() {
+    var newMode = $("#mode").val();
+    if (newMode == "python") {
+
+        document.getElementById("filename").value = "example.py";
+
+} else if (newMode == "php") {
+    document.getElementById("filename").value = "example.php";
+
+} else   {
+
+    document.getElementById("filename").value = "example.java";
+
+}
+
+
+    
+    
+    console.log(newMode);
+    editor.session.setMode({
+        path: "ace/mode/" + newMode,
+        v: Date.now()
+    });
+    editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: true
+});
+
+});
+
+    </script>
+    <script src="js/server.js"></script>
+
+
+
+</body>
+
+</html>
